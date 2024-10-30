@@ -106,7 +106,7 @@ def main():
         elif i == 0:
             streams = get_video_streams(vid_link, quality, file_type="m4a")
         elif i == 1:
-            streams = get_video_streams(vid_link, quality, file_type="webm", threads=16)
+            streams = get_video_streams(vid_link, quality, file_type="webm")
         else:
             print("\nError: No streams found with selected quality and file type. Specified quality might not be available for this video. Please try changing the file type or video quality and try again.")
 
@@ -117,4 +117,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    al.combine_streams()
