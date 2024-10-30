@@ -100,22 +100,18 @@ def main():
     for i in range(3):
         if video_streams:
             video = video_streams.get_highest_resolution(progressive=False)
-
-            global video_title
-            video_title = video.title
-
             v_download(video, file_type)
+            al.combine_streams(video.title, file_type or "mp4")
             break
         elif i == 0:
             streams = get_video_streams(vid_link, quality, file_type="m4a")
         elif i == 1:
-            streams = get_video_streams(vid_link, quality, file_type="webm")
+            streams = get_video_streams(vid_link, quality, file_type="webm", threads=16)
         else:
             print("\nError: No streams found with selected quality and file type. Specified quality might not be available for this video. Please try changing the file type or video quality and try again.")
 
     if input("Do you want to download another video? (y/n): ").lower() == "y":
         main()
-        al.combine_streams()
 
 
 

@@ -1,5 +1,6 @@
-import ffmpeg
+# import main
 from moviepy.editor import VideoFileClip, AudioFileClip
+from moviepy.video.io.ffmpeg_tools import ffmpeg_merge_video_audio
 from pytubefix import YouTube
 
 def combine_streams(filename, filetype):
@@ -9,7 +10,7 @@ def combine_streams(filename, filetype):
 
     video_path = f"temp/temp_video.{filetype}"
     audio_path = "temp/temp_audio.webm"
-    output_name = f"{filename}.{filetype}"
+    output_path = f"{filename}.{filetype}"
 
     video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
@@ -18,12 +19,8 @@ def combine_streams(filename, filetype):
     final_clip = video_clip.set_audio(audio_clip)
 
     # Write the result to a file with high-quality codecs
-    # final_clip.write_videofile(output_name, preset = "ultrafast", logger = "bar", threads=32)
-
-    ffmpeg.input(video_path).output(
-    audio=ffmpeg.input(audio_path),
-    filename=output_name,
-    vcodec='copy',  # Copy the video stream without re-encoding
-    acodec='copy',   # Use AAC codec for audio
-    strict='experimental'
-    ).run()
+    
+# printing logs can be a bottleneck sometimes, so we put ffmpeg_ouput=False
+# and logger = None
+# you can change video codec(vcodec) or audio codec (acodec) as per your need
+    ffmpeg_merge_video_audio(video_path, audio_path, output_path, ffmpeg_output=False, logger="bar")
