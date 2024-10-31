@@ -1,6 +1,7 @@
 import pytubefix as pt
-import audio_linker2 as al
+import audio_linker as al
 from urllib import request
+import temp_delete as td
 
 video_title = ""
 video_filetype = ""
@@ -60,7 +61,7 @@ def v_download(video, file_type):
     print("Download in progress...")
     vid_filename = f"temp_video.{file_type}"
     video.download(output_path="temp", filename=vid_filename)
-    print("Download complete.\n")
+
 
 def a_download(audio):
     audio.download(output_path="temp", filename="temp_audio.webm")
@@ -97,22 +98,26 @@ def main():
 
     # Checks to make sure that a video stream with the user's specified quality and file type exists, prints error message if it doesn't
     video_streams = get_video_streams(vid_link, quality, file_type)
-    for i in range(3):
+    for i in range(4):
         if video_streams:
             video = video_streams.get_highest_resolution(progressive=False)
             v_download(video, file_type)
             al.combine_streams(video.title, file_type or "mp4")
+            print("\nDownload complete.\n")
             break
         elif i == 0:
-            streams = get_video_streams(vid_link, quality, file_type="m4a")
+            streams = get_video_streams(vid_link, quality, file_type="mp4")
         elif i == 1:
+            streams = get_video_streams(vid_link, quality, file_type="m4a")
+        elif i == 2:
             streams = get_video_streams(vid_link, quality, file_type="webm")
         else:
             print("\nError: No streams found with selected quality and file type. Specified quality might not be available for this video. Please try changing the file type or video quality and try again.")
 
+        td.delete_temp()
+
     if input("Do you want to download another video? (y/n): ").lower() == "y":
         main()
-
 
 
 if __name__ == "__main__":

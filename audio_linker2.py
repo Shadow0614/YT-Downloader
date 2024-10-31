@@ -24,3 +24,5 @@ def combine_streams(filename, filetype):
 # and logger = None
 # you can change video codec(vcodec) or audio codec (acodec) as per your need
     # ffmpeg_merge_video_audio(video_path, audio_path, output_name, vcodec="copy", acodec="copy", ffmpeg_output=False, logger="bar")
+
+# TODO: BROKEN CODE, not used by main program
