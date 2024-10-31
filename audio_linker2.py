@@ -10,7 +10,7 @@ def combine_streams(filename, filetype):
 
     video_path = f"temp/temp_video.{filetype}"
     audio_path = "temp/temp_audio.webm"
-    output_path = f"{filename}.{filetype}"
+    output_name = f"{filename}.{filetype}"
 
     video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
@@ -18,9 +18,9 @@ def combine_streams(filename, filetype):
     # Set the audio of the video clip
     final_clip = video_clip.set_audio(audio_clip)
 
-    # Write the result to a file with high-quality codecs
+    final_clip.write_videofile(output_name, preset="ultrafast", threads=128)
     
 # printing logs can be a bottleneck sometimes, so we put ffmpeg_ouput=False
 # and logger = None
 # you can change video codec(vcodec) or audio codec (acodec) as per your need
-    ffmpeg_merge_video_audio(video_path, audio_path, output_path, ffmpeg_output=False, logger="bar")
+    # ffmpeg_merge_video_audio(video_path, audio_path, output_name, vcodec="copy", acodec="copy", ffmpeg_output=False, logger="bar")
