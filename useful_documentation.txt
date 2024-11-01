@@ -1,0 +1,3 @@
+https://pytube.io/en/latest/user/channel.html
+https://pytube.io/en/latest/user/streams.html#downloading-streams
+https://pytube.io/en/latest/api.html
