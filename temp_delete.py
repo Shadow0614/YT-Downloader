@@ -7,9 +7,6 @@ def delete_temp():
 
     if os.path.exists(temp_folder_path) and os.path.isdir(temp_folder_path): # Checks if temp folder exists and is a directory
         shutil.rmtree(temp_folder_path) # Deletes temp folder and all its contents
-        # print(f"Deleted folder: {temp_folder_path}")
-    # else:
-    #     print(f"Folder does not exist: {temp_folder_path}")
 
 if __name__ == "__main__":
     delete_temp()

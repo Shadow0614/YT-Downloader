@@ -1,10 +1,7 @@
 import pytubefix as pt
-import audio_linker as al
 from urllib import request
+import audio_linker as al
 import temp_delete as td
-
-video_title = ""
-video_filetype = ""
 
 # Filters the video based on the provided link, quality, and file type
 # Should return a StreamQuery object, similar to a list
@@ -50,7 +47,7 @@ def internet_check():
         request.urlopen('https://www.youtube.com', timeout=1)
         return True
     except request.URLError:
-        print("Error: no internet connection.")
+        input("\nError: no internet connection. Press enter key to exit: ")
         return False
     
 
@@ -73,7 +70,7 @@ def main():
         vid_link = input("Enter YouTube video link: ")
         if "youtube.com/watch?" in vid_link or "youtu.be/" in vid_link:
             break
-        print("Invalid YouTube link. Please enter a valid link.\n")
+        print("\nInvalid YouTube link. Please enter a valid link.\n")
 
     while True:
         quality = input("Enter desired video quality, if known (Ex: 720p, 1080p, 1440p, etc). Press enter to skip: ")
@@ -84,8 +81,6 @@ def main():
     while True:
         file_type = input("Enter desired file type, if known (Ex: mp4, m4a, webm). Press enter to skip: ")
         if file_type in ["mp4", "m4a", "webm"] or file_type == "":
-            global video_filetype
-            video_filetype = file_type
             break
         print("\nInvalid file type. Please enter a valid file type. Press enter to skip.\n")
 
@@ -104,6 +99,7 @@ def main():
             v_download(video, file_type)
             al.combine_streams(video.title, file_type or "mp4")
             print("\nDownload complete.\n")
+            td.delete_temp()
             break
         elif i == 0:
             streams = get_video_streams(vid_link, quality, file_type="mp4")
@@ -114,7 +110,6 @@ def main():
         else:
             print("\nError: No streams found with selected quality and file type. Specified quality might not be available for this video. Please try changing the file type or video quality and try again.")
 
-        td.delete_temp()
 
     if input("Do you want to download another video? (y/n): ").lower() == "y":
         main()
