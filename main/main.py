@@ -1,6 +1,6 @@
 import pytubefix as pt
 from urllib import request
-import audio_linker as al
+import main.av_linker as al
 import temp_delete as td
 
 # Filters the video based on the provided link, quality, and file type
