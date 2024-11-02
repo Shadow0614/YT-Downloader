@@ -1,8 +1,9 @@
 Pytube:
 
 https://pytube.io/en/latest/user/channel.html
-https://pytube.io/en/latest/user/streams.html#downloading-streams
 https://pytube.io/en/latest/api.html
+https://pytube.io/en/latest/user/streams.html#downloading-streams
+https://pytube.io/en/latest/user/streams.html#filtering-streams
 
 Ffmpeg:
 https://kkroening.github.io/ffmpeg-python/index.html?highlight=ffmpeg%20output#ffmpeg.output
