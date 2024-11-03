@@ -1,10 +1,14 @@
-class video:
-    def __init__(self, link, title, resolution, filetype):
-        self.title = title
-        self.resolution = resolution
-        self.filetype = filetype
+from consts import RESOLUTIONS, FILETYPES
+from video_class import Video
 
-test = video("test", "1080p", "mp4")
-print(test.title)
-print(test.resolution)
-print(test.filetype)
+
+
+# Usage
+try:
+    
+    
+    costarica = Video("https://www.youtube.com/watch?v=BxdSUGBs0gM", "720p")
+    get_user_input(costarica)
+    print(costarica.url, costarica.resolution, costarica.filetype)
+except Exception as e:
+    print(f"Error: {e}")
