@@ -1,21 +1,15 @@
 import customtkinter as ctk
+from video_class import Video
 
-url = None
-filetype = None
-res = None
 
-# Define functions that will be called when the URL, file type, and resolution are updated by the user
-def url_update(var_name, index, mode):
-    url = inp_url.get()
-    # print(url) For debugging
+# Define functions that will be called when user clicks the download button
+def download_button(var_name=None, index=None, mode=None):
+    video = Video(url.get(), res.get(), filetype.get(), url_status_label)
+    video.download()
 
-def filetype_update(var_name, index, mode):
-    filetype = inp_filetype.get()
-    # print(filetype) For debugging
-
-def res_update(var_name, index, mode):
-    res = inp_res.get()
-    # print(res) For debugging
+def res_update(var_name=None, index=None, mode=None):
+    video = Video(url.get(), res.get(), filetype.get())
+    # dropdown._values = video.streams.filter(file_extension=filetype.get()).order_by('resolution').desc().all()
 
 # Create the main window
 root = ctk.CTk()
@@ -41,14 +35,16 @@ url_frame.grid_columnconfigure(1, weight=1)
 
 # Add URL label and entry
 url_label = ctk.CTkLabel(url_frame, text="Enter YouTube Video URL:")
-url_label.grid(row=0, column=0, columnspan=2, pady=(10,0))
+url_label.grid(row=0, column=0, columnspan=2, pady=(0,0))
 
 # Declare and watch the URL entry variable
-inp_url = ctk.StringVar(value="")
-inp_url.trace_add("write", url_update)
+url = ctk.StringVar(value="")
 
-url_entry = ctk.CTkEntry(url_frame, width=350, textvariable=inp_url)
+url_entry = ctk.CTkEntry(url_frame, width=350, textvariable=url)
 url_entry.grid(row=1, column=0, columnspan=2, pady=20)
+
+url_status_label = ctk.CTkLabel(url_frame, text="", text_color="red", font=("Monaspace Neon", 14, "normal"))
+url_status_label.grid(row=2, column=0, columnspan=2, pady=0)
 
 # Create main options frame
 options_frame = ctk.CTkFrame(root, fg_color="transparent")
@@ -73,16 +69,16 @@ radio_label = ctk.CTkLabel(inner_radio_frame, text="Select File Type")
 radio_label.grid(row=0, column=0, padx=10, pady=(0,10))
 
 # Declare and watch the file type variable
-inp_filetype = ctk.StringVar(value="mp4")
-inp_filetype.trace_add("write", filetype_update)
+filetype = ctk.StringVar(value="mp4")
+filetype.trace_add("write", res_update)
 
 # Set up radio buttons
 radio1 = ctk.CTkRadioButton(inner_radio_frame, text="MP4 (Select this if you're not sure)", 
-                           variable=inp_filetype, value="mp4")
+                           variable=filetype, value="mp4")
 radio2 = ctk.CTkRadioButton(inner_radio_frame, text="M4A", 
-                           variable=inp_filetype, value="m4a")
+                           variable=filetype, value="m4a")
 radio3 = ctk.CTkRadioButton(inner_radio_frame, text="WEBM", 
-                           variable=inp_filetype, value="webm")
+                           variable=filetype, value="webm")
 
 # Position radio buttons vertically in the inner frame
 radio1.grid(row=1, column=0, padx=10, pady=5, sticky="w")
@@ -94,13 +90,12 @@ inner_dropdown_frame = ctk.CTkFrame(options_frame, fg_color="transparent")
 inner_dropdown_frame.grid(row=0, column=3)
 
 # Declare and watch the resolution variable
-inp_res = ctk.StringVar(value="Select Resolution")
-inp_res.trace_add("write", res_update)
+res = ctk.StringVar(value="Select Resolution")
                         
 # Create and position dropdown menu                )
 dropdown = ctk.CTkOptionMenu(inner_dropdown_frame, 
                            values=["144p", "Choice 2", "Choice 3"],
-                           variable=inp_res,
+                           variable=res,
                            width=200)
 dropdown.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
@@ -112,7 +107,8 @@ button_frame.grid(row=2, column=0, columnspan=2)
 button_frame.grid_columnconfigure(0, weight=1)
 button_frame.grid_columnconfigure(1, weight=1)
 
-download_button = ctk.CTkButton(button_frame, text="Download", width=120, cursor="hand2")
+# Configure download button
+download_button = ctk.CTkButton(button_frame, text="Download", width=120, cursor="hand2", command=download_button)
 download_button.grid(row=0, column=0, columnspan=2, pady=(0,10))
 
 # Start the application
