@@ -1,19 +1,28 @@
 import customtkinter as ctk
-from video_class import Video
+from gui.video_class import Video
 
 
 # Define functions that will be called when user clicks the download button
-def download_button(var_name=None, index=None, mode=None):
+def download_clicked(var_name=None, index=None, mode=None):
+    """Runs when download button is clicked"""
     video = Video(url.get(), res.get(), filetype.get(), url_status_label)
     video.download()
 
-def res_update(var_name=None, index=None, mode=None):
-    video = Video(url.get(), res.get(), filetype.get())
-    # dropdown._values = video.streams.filter(file_extension=filetype.get()).order_by('resolution').desc().all()
+def update_resolutions(var_name=None, index=None, mode=None):
+    """Update resolutions in dropdown when URL or filetype changes"""
+    video = Video(url.get(), res.get(), filetype.get(), url_status_label)
+    resolutions = video.get_available_resolutions()
+    dropdown.configure(values=resolutions)
+    res.set("Select Resolution") # Reset selected resolution to default when URL or filetype changes
+        
+    # res.set(resolutions[0]) # Sets the resolution to the first available resolution in the dropdown when URL or filetype is changed
 
 # Create the main window
 root = ctk.CTk()
-root.title("YT Downloader V2.0")
+root.title("YT Downloader v2.0")
+icon_path = r"_internal\gui\tesseract.ico" # When exported as an exe file with pyinstaller
+# icon_path = "gui\tesseract.ico" # When running source code directly
+root.iconbitmap(icon_path)
 root.geometry("750x480")
 
 # Configure equal column widths and center vertically
@@ -39,6 +48,7 @@ url_label.grid(row=0, column=0, columnspan=2, pady=(0,0))
 
 # Declare and watch the URL entry variable
 url = ctk.StringVar(value="")
+url.trace_add("write", update_resolutions)
 
 url_entry = ctk.CTkEntry(url_frame, width=350, textvariable=url)
 url_entry.grid(row=1, column=0, columnspan=2, pady=20)
@@ -70,7 +80,7 @@ radio_label.grid(row=0, column=0, padx=10, pady=(0,10))
 
 # Declare and watch the file type variable
 filetype = ctk.StringVar(value="mp4")
-filetype.trace_add("write", res_update)
+filetype.trace_add("write", update_resolutions)
 
 # Set up radio buttons
 radio1 = ctk.CTkRadioButton(inner_radio_frame, text="MP4 (Select this if you're not sure)", 
@@ -94,7 +104,7 @@ res = ctk.StringVar(value="Select Resolution")
                         
 # Create and position dropdown menu                )
 dropdown = ctk.CTkOptionMenu(inner_dropdown_frame, 
-                           values=["144p", "Choice 2", "Choice 3"],
+                           values=["Select Resolution"],
                            variable=res,
                            width=200)
 dropdown.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
@@ -108,8 +118,9 @@ button_frame.grid_columnconfigure(0, weight=1)
 button_frame.grid_columnconfigure(1, weight=1)
 
 # Configure download button
-download_button = ctk.CTkButton(button_frame, text="Download", width=120, cursor="hand2", command=download_button)
+download_button = ctk.CTkButton(button_frame, text="Download", width=140, cursor="hand2", command=download_clicked)
 download_button.grid(row=0, column=0, columnspan=2, pady=(0,10))
 
 # Start the application
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()
