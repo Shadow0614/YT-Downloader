@@ -1,5 +1,22 @@
 import customtkinter as ctk
 
+url = None
+filetype = None
+res = None
+
+# Define functions that will be called when the URL, file type, and resolution are updated by the user
+def url_update(var_name, index, mode):
+    url = inp_url.get()
+    # print(url) For debugging
+
+def filetype_update(var_name, index, mode):
+    filetype = inp_filetype.get()
+    # print(filetype) For debugging
+
+def res_update(var_name, index, mode):
+    res = inp_res.get()
+    # print(res) For debugging
+
 # Create the main window
 root = ctk.CTk()
 root.title("YT Downloader V2.0")
@@ -26,7 +43,11 @@ url_frame.grid_columnconfigure(1, weight=1)
 url_label = ctk.CTkLabel(url_frame, text="Enter YouTube Video URL:")
 url_label.grid(row=0, column=0, columnspan=2, pady=(10,0))
 
-url_entry = ctk.CTkEntry(url_frame, width=350)
+# Declare and watch the URL entry variable
+inp_url = ctk.StringVar(value="")
+inp_url.trace_add("write", url_update)
+
+url_entry = ctk.CTkEntry(url_frame, width=350, textvariable=inp_url)
 url_entry.grid(row=1, column=0, columnspan=2, pady=20)
 
 # Create main options frame
@@ -51,14 +72,17 @@ options_frame.grid_rowconfigure(0, weight=1)
 radio_label = ctk.CTkLabel(inner_radio_frame, text="Select File Type")
 radio_label.grid(row=0, column=0, padx=10, pady=(0,10))
 
+# Declare and watch the file type variable
+inp_filetype = ctk.StringVar(value="mp4")
+inp_filetype.trace_add("write", filetype_update)
+
 # Set up radio buttons
-radio_var = ctk.StringVar(value="option1")
 radio1 = ctk.CTkRadioButton(inner_radio_frame, text="MP4 (Select this if you're not sure)", 
-                           variable=radio_var, value="option1")
+                           variable=inp_filetype, value="mp4")
 radio2 = ctk.CTkRadioButton(inner_radio_frame, text="M4A", 
-                           variable=radio_var, value="option2")
+                           variable=inp_filetype, value="m4a")
 radio3 = ctk.CTkRadioButton(inner_radio_frame, text="WEBM", 
-                           variable=radio_var, value="option3")
+                           variable=inp_filetype, value="webm")
 
 # Position radio buttons vertically in the inner frame
 radio1.grid(row=1, column=0, padx=10, pady=5, sticky="w")
@@ -69,11 +93,14 @@ radio3.grid(row=3, column=0, padx=10, pady=5, sticky="w")
 inner_dropdown_frame = ctk.CTkFrame(options_frame, fg_color="transparent")
 inner_dropdown_frame.grid(row=0, column=3)
 
-# Create and position dropdown menu
-dropdown_var = ctk.StringVar(value="Select Resolution")
+# Declare and watch the resolution variable
+inp_res = ctk.StringVar(value="Select Resolution")
+inp_res.trace_add("write", res_update)
+                        
+# Create and position dropdown menu                )
 dropdown = ctk.CTkOptionMenu(inner_dropdown_frame, 
-                           values=["Choice 1", "Choice 2", "Choice 3"],
-                           variable=dropdown_var,
+                           values=["144p", "Choice 2", "Choice 3"],
+                           variable=inp_res,
                            width=200)
 dropdown.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
