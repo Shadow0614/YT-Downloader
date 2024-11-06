@@ -1,1 +1,1 @@
-Terminal application coded in python that can download youtube videos from a link with various resolutions and formats.
+Terminal application coded in python that can download youtube videos from a link in various resolutions and formats.
