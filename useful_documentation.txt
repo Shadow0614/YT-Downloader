@@ -7,3 +7,8 @@ https://pytube.io/en/latest/user/streams.html#filtering-streams
 
 Ffmpeg:
 https://kkroening.github.io/ffmpeg-python/index.html?highlight=ffmpeg%20output#ffmpeg.output
+
+Customtkinter:
+https://customtkinter.tomschimansky.com/documentation/
+https://customtkinter.tomschimansky.com/documentation/widgets
+https://customtkinter.tomschimansky.com/documentation/packaging
